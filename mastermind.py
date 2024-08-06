@@ -1,18 +1,42 @@
 import random
 from colored import fg, attr
 class Mastermind:
-    COLORS = {"R": fg("red"), "B": fg("blue"), "G": fg("green"), "Y": fg("yellow")}
-    ColoresPosiciones = {"correcto": fg("green"), "desubicado": fg("yellow")}
+    COLORES = {"R": fg("red"), "B": fg("blue"), "G": fg("green"), "Y": fg("yellow")}
+    ColorCorrecto = fg("green") + "O" + attr("reset")
+    ColorDesubicado = fg("yellow") + "O" + attr("reset")
     def __init__(self):
-        self.board = [[' ']*4 + [' '] for _ in range(12)]
-        self.secret_code = []
-    def display_board(self):
-        for row in self.board:
-            guess = ' '.join([self.COLORS.get(color, '') + 'O' + attr('reset') for color in row[:4]])
-            Posicion = ''.join(row[4])
-            print(f"{guess} | {Posicion}")
-    def update_board(self, turn, guess, Posicion):
-        self.board[turn][:4] = guess
-        self.board[turn][4] = Posicion
+        self.tablero = [[' ']*4 + [' '] for _ in range(12)]
+    def mostrar(self):
+        for fila in self.tablero:
+            adivinanza = " ".join([self.COLORES.get(color, '') + 'O' + attr('reset') for color in fila[:4]])
+            indicaciones = " ".join(fila[4])
+            print(f"{adivinanza} {indicaciones}")
+            
+    def actualizar(self, turno, adivinanza, indicaciones):
+        self.tablero[turno][:4] = adivinanza
+        self.tablero[turno][4] = indicaciones
 
-   
+class CreadorCodigo:
+    def __init__(self, colores):
+        self.colores = colores
+        self.codigo_secreto = self.crear_codigo_secreto()
+    def crear_codigo_secreto(self):
+        return [random.choice(self.colores) for _ in range(4)]
+    def obtener_retroalimentacion(self, adivinanza):
+        indicaciones = []
+        codigo_secreto_copia = self.codigo_secreto[:]
+        for i in range(4):
+            if adivinanza[i] == codigo_secreto_copia[i]:
+                indicaciones.append(Mastermind.ColorDesubicado)
+                
+        codigo_secreto_copia[codigo_secreto_copia.index(adivinanza[i])] = None
+        return indicaciones
+    
+    class AdivinarJuego:
+        def __init__(self, colores):
+            self.colores = colores
+        def HacerAdivinanaza(self):
+            adivinanza = input("Agregue su adivinanza de colores:").upper()
+            while len(adivinanza) != 4 or any(c not in self.colores for c in adivinanza):
+             adivinanza = input("Adivinaza incorrecta").upper()
+            return list(adivinanza)
