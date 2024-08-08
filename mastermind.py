@@ -48,8 +48,20 @@ class AdivinadorDeJuego:
 def JugarMatermind():
             colores = ["R", "B", "G", "Y"]
             tablero = Mastermind()
-            creador__codigo = CreadorCodigo(colores)
-            adivinador__codigo = AdivinadorDeJuego(colores)
+            opcion = input("¿Quieres ser el creador (Maker) o el adivinador (Breaker)? (M/B): ").upper()
+            while opcion not in ["M", "B"]:
+              opcion = input("Opción inválida, elige M para Maker o B para Breaker: ").upper()
+            if opcion == "M":
+              codigo_usuario = input("Ingresa tu código de 4 colores: ").upper()
+            while len(codigo_usuario) != 4 or any(c not in colores for c in codigo_usuario):
+              codigo_usuario = input("Código incorrecto, intente de nuevo: ").upper()
+              creador_codigo = CreadorCodigo(colores)
+              creador_codigo.codigo_secreto = list(codigo_usuario)
+            else:
+              creador_codigo = CreadorCodigo(colores)
+              adivinador__codigo = AdivinadorDeJuego(colores)
+              creador__codigo = CreadorCodigo(colores)
+              adivinador__codigo = AdivinadorDeJuego(colores)
             
             for turno in range(12):
                 tablero.mostrar()
