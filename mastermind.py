@@ -45,12 +45,24 @@ class AdivinadorDeJuego:
              adivinanza = input("Adivinaza incorrecta").upper()
             return list(adivinanza)
 
-
-
-
-
-
-
-
+def JugarMatermind():
+            colores = ["R", "B", "G", "Y"]
+            tablero = Mastermind()
+            creador__codigo = CreadorCodigo(colores)
+            adivinador__codigo = AdivinadorDeJuego(colores)
+            
+            for turno in range(12):
+                tablero.mostrar()
+                adivinanza = adivinador__codigo.HacerAdivinanaza()
+                indicaciones = creador__codigo.ObtenerIndicaciones(adivinanza)
+            tablero.actualizar(turno, adivinanza, indicaciones)
+            
+            if all(f == Mastermind.ColorCorrecto for f in indicaciones):
+                print("Colores adivinados!")
+                return
+            print(f"Juego terminado, los colores eran {''.join(creador__codigo.codigo_secreto)}")
+   
+JugarMatermind() 
+        
 
 
